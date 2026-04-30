@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
 using System.Windows.Forms;
 
 namespace AnyStore.UI
@@ -207,7 +207,7 @@ namespace AnyStore.UI
 
             transaction.dea_cust_id = dc.id;
             transaction.grandTotal = Math.Round(decimal.Parse(txtGrandTotal.Text),2);
-            transaction.transaction_date = DateTime.Now;
+            transaction.transaction_date = DateTimeOffset.UtcNow;
             transaction.tax = decimal.Parse(txtVat.Text);
             transaction.discount = decimal.Parse(txtDiscount.Text);
 
@@ -221,9 +221,15 @@ namespace AnyStore.UI
             //Lets Create a Boolean Variable and set its value to false
             bool success = false;
 
-            //Actual Code to Insert Transaction And Transaction Details
-            using (TransactionScope scope = new TransactionScope())
+            //Actual Code to Insert Transaction And Transaction Details using database transaction
+            // Use SqlTransaction instead of TransactionScope for cloud compatibility
+            using (SqlConnection transConn = DatabaseConnectionManager.CreateConnection())
             {
+                transConn.Open();
+                using (SqlTransaction sqlTransaction = transConn.BeginTransaction())
+                {
+                    try
+                    {
                 int transactionID = -1;
                 //Create aboolean value and insert transaction 
                 bool w = tDAL.Insert_Transaction(transaction, out transactionID);
@@ -242,7 +248,7 @@ namespace AnyStore.UI
                     transactionDetail.qty = decimal.Parse(transactionDT.Rows[i][2].ToString());
                     transactionDetail.total = Math.Round(decimal.Parse(transactionDT.Rows[i][3].ToString()),2);
                     transactionDetail.dea_cust_id = dc.id;
-                    transactionDetail.added_date = DateTime.Now;
+                    transactionDetail.added_date = DateTimeOffset.UtcNow;
                     transactionDetail.added_by = u.id;
 
                     //Here Increase or Decrease Product Quantity based on Purchase or sales
@@ -267,9 +273,9 @@ namespace AnyStore.UI
                 }
                 
                 if (success == true)
-                {
-                    //Transaction Complete
-                    scope.Complete();
+                        {
+                            //Transaction Complete
+                            sqlTransaction.Commit();
 
                     //Code to Print Bill
                     DGVPrinter printer = new DGVPrinter();
@@ -308,10 +314,21 @@ namespace AnyStore.UI
                     txtReturnAmount.Text = "0";
                 }
                 else
-                {
-                    //Transaction Failed
-                    MessageBox.Show("Transaction Failed");
+                        {
+                            //Transaction Failed - Rollback
+                            sqlTransaction.Rollback();
+                            MessageBox.Show("Transaction Failed");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //Rollback on exception
+                        sqlTransaction.Rollback();
+                        MessageBox.Show("Transaction Error: " + ex.Message);
+                        success = false;
+                    }
                 }
+            }
             }
         }
     }

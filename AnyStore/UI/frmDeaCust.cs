@@ -37,7 +37,7 @@ namespace AnyStore.UI
             dc.email = txtEmail.Text;
             dc.contact = txtContact.Text;
             dc.address = txtAddress.Text;
-            dc.added_date = DateTime.Now;
+            dc.added_date = DateTimeOffset.UtcNow;
             //Getting the ID to Logged in user and passign its value in dealer or cutomer module
             string loggedUsr = frmLogin.loggedIn;
             userBLL usr = uDal.GetIDFromUsername(loggedUsr);
@@ -99,7 +99,7 @@ namespace AnyStore.UI
             dc.email = txtEmail.Text;
             dc.contact = txtContact.Text;
             dc.address = txtAddress.Text;
-            dc.added_date = DateTime.Now;
+            dc.added_date = DateTimeOffset.UtcNow;
             //Getting the ID to Logged in user and passign its value in dealer or cutomer module
             string loggedUsr = frmLogin.loggedIn;
             userBLL usr = uDal.GetIDFromUsername(loggedUsr);

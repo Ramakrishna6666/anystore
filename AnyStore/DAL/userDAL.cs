@@ -12,14 +12,12 @@ using System.Windows.Forms;
 namespace AnyStore.DAL
 {
     class userDAL
-    {
-        static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
-
-        #region Select Data from Database
+    {        #region Select Data from Database
         public DataTable Select()
         {
             //Static MEthod to connect Database
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             //TO hold the data from database 
             DataTable dt = new DataTable();
             try
@@ -40,20 +38,18 @@ namespace AnyStore.DAL
                 //Throw Message if any error occurs
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                //Closing Connection
-                conn.Close();
-            }
+            
             //Return the value in DataTable
-            return dt;
+                        return dt;
+            }
         }
         #endregion
         #region Insert Data in Database
         public bool Insert(userBLL u)
         {
             bool isSuccess = false;
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -92,18 +88,17 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
+            
+                        return isSuccess;
             }
-            return isSuccess;
         }
         #endregion
         #region Update data in Database
         public bool Update(userBLL u)
         {
             bool isSuccess = false;
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             
             try
             {
@@ -142,18 +137,17 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
+            
+                        return isSuccess;
             }
-            return isSuccess;
         }
         #endregion
         #region Delete Data from DAtabase
         public bool Delete(userBLL u)
         {
             bool isSuccess = false;
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -179,18 +173,17 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
+            
+                        return isSuccess;
             }
-            return isSuccess;
         }
         #endregion
         #region Search User on Database usingKeywords
         public DataTable Search(string keywords)
         {
             //Static MEthod to connect Database
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             //TO hold the data from database 
             DataTable dt = new DataTable();
             try
@@ -211,20 +204,18 @@ namespace AnyStore.DAL
                 //Throw Message if any error occurs
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                //Closing Connection
-                conn.Close();
-            }
+            
             //Return the value in DataTable
-            return dt;
+                        return dt;
+            }
         }
         #endregion
         #region Getting User ID from Username
         public userBLL GetIDFromUsername (string username)
         {
             userBLL u = new userBLL();
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             DataTable dt = new DataTable();
 
             try
@@ -244,11 +235,9 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
+            
+                        return u;
             }
-            return u;
         }
         #endregion
     }

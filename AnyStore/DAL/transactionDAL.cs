@@ -13,10 +13,7 @@ namespace AnyStore.DAL
 {
     class transactionDAL
     {
-        //Create a connection string variable
-        static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
-
-        #region Insert Transaction Method
+        //Create a connection string variable        #region Insert Transaction Method
         public bool Insert_Transaction(transactionsBLL t, out int transactionID)
         {
             //Create a boolean value and set its default value to false
@@ -24,7 +21,8 @@ namespace AnyStore.DAL
             //Set the out transactionID value to negative 1 i.e. -1
             transactionID = -1;
             //Create a SqlConnection first
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             try
             {
                 //SQL Query to Insert Transactions
@@ -67,18 +65,18 @@ namespace AnyStore.DAL
             }
             finally
             {
-                //Close the connection 
-                conn.Close();
-            }
+                //Close the connection            }
 
-            return isSuccess;
+                        return isSuccess;
+            }
         }
         #endregion
         #region METHOD TO DISPLAY ALL THE TRANSACTION
         public DataTable DisplayAllTransactions()
         {
             //SQlConnection First
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             //Create a DAta Table to hold the datafrom database temporarily
             DataTable dt = new DataTable();
@@ -103,19 +101,18 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return dt;
+                        return dt;
+            }
         }
         #endregion
         #region METHOD TO DISPLAY TRANSACTION BASED ON TRANSACTION TYPE
         public DataTable DisplayTransactionByType(string type)
         {
             //Create SQL Connection
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             //Create a DataTable
             DataTable dt = new DataTable();
@@ -138,12 +135,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return dt;
+                        return dt;
+            }
         }
         #endregion
     }

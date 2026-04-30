@@ -52,7 +52,7 @@ namespace AnyStore.UI
             p.description = txtDescription.Text;
             p.rate = decimal.Parse(txtRate.Text);
             p.qty = 0;
-            p.added_date = DateTime.Now;
+            p.added_date = DateTimeOffset.UtcNow;
             //Getting username of logged in user
             String loggedUsr = frmLogin.loggedIn;
             userBLL usr = udal.GetIDFromUsername(loggedUsr);
@@ -108,7 +108,7 @@ namespace AnyStore.UI
             p.category = cmbCategory.Text;
             p.description = txtDescription.Text;
             p.rate = decimal.Parse(txtRate.Text);
-            p.added_date = DateTime.Now;
+            p.added_date = DateTimeOffset.UtcNow;
             //Getting Username of logged in user for added by
             String loggedUsr = frmLogin.loggedIn;
             userBLL usr = udal.GetIDFromUsername(loggedUsr);

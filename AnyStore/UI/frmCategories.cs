@@ -33,7 +33,7 @@ namespace AnyStore.UI
             //Get the values from Categroy Form
             c.title = txtTitle.Text;
             c.description = txtDescription.Text;
-            c.added_date = DateTime.Now;
+            c.added_date = DateTimeOffset.UtcNow;
 
             //Getting ID in Added by field
             string loggedUser = frmLogin.loggedIn;
@@ -90,7 +90,7 @@ namespace AnyStore.UI
             c.id = int.Parse(txtCategoryID.Text);
             c.title = txtTitle.Text;
             c.description = txtDescription.Text;
-            c.added_date = DateTime.Now;
+            c.added_date = DateTimeOffset.UtcNow;
             //Getting ID in Added by field
             string loggedUser = frmLogin.loggedIn;
             userBLL usr = udal.GetIDFromUsername(loggedUser);

@@ -14,13 +14,13 @@ namespace AnyStore.DAL
     class productsDAL
     {
         //Creating STATI String Method for DB Connection
-        static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region Select method for Product Module
         public DataTable Select()
         {
             //Create Sql Connection to connect Databaes
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             //DAtaTable to hold the data from database
             DataTable dt = new DataTable();
@@ -45,12 +45,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return dt;
+                        return dt;
+            }
         }
         #endregion
         #region Method to Insert Product in database
@@ -60,7 +58,8 @@ namespace AnyStore.DAL
             bool isSuccess = false;
 
             //Sql Connection for DAtabase
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -100,12 +99,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return isSuccess;
+                        return isSuccess;
+            }
         }
         #endregion
         #region Method to Update Product in Database
@@ -115,7 +112,8 @@ namespace AnyStore.DAL
             bool isSuccess = false;
 
             //Create SQL Connection for DAtabase
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -156,12 +154,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return isSuccess;
+                        return isSuccess;
+            }
         }
         #endregion
         #region Method to Delete Product from Database
@@ -171,7 +167,8 @@ namespace AnyStore.DAL
             bool isSuccess = false;
 
             //SQL Connection for DB connection
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -204,19 +201,18 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return isSuccess;
+                        return isSuccess;
+            }
         }
         #endregion
         #region SEARCH Method for Product Module
         public DataTable Search (string keywords)
         {
             //SQL Connection fro DB Connection
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             //Creating DAtaTable to hold value from dAtabase
             DataTable dt = new DataTable();
 
@@ -239,12 +235,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return dt;
+                        return dt;
+            }
         }
         #endregion
         #region METHOD TO SEARCH PRODUCT IN TRANSACTION MODULE
@@ -253,7 +247,8 @@ namespace AnyStore.DAL
             //Create an object of productsBLL and return it
             productsBLL p = new productsBLL();
             //SqlConnection
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             //Datatable to store data temporarily
             DataTable dt = new DataTable();
 
@@ -282,13 +277,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                //Close Database Connection
-                conn.Close();
-            }
+            
 
-            return p;
+                        return p;
+            }
         }
         #endregion
         #region METHOD TO GET PRODUCT ID BASED ON PRODUCT NAME
@@ -298,7 +290,8 @@ namespace AnyStore.DAL
             productsBLL p = new productsBLL();
 
             //SQL Conection here
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             //Data TAble to Holdthe data temporarily
             DataTable dt = new DataTable();
 
@@ -323,19 +316,18 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return p;
+                        return p;
+            }
         }
         #endregion
         #region METHOD TO GET CURRENT QUantity from the Database based on Product ID
         public decimal GetProductQty(int ProductID)
         {
             //SQl Connection First
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
             //Create a Decimal Variable and set its default value to 0
             decimal qty = 0;
 
@@ -369,13 +361,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                //Close Database Connection
-                conn.Close();
-            }
+            
 
-            return qty;
+                        return qty;
+            }
         }
         #endregion
         #region METHOD TO UPDATE QUANTITY
@@ -385,7 +374,8 @@ namespace AnyStore.DAL
             bool success = false;
 
             //SQl Connection to Connect Database
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -419,12 +409,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return success;
+                        return success;
+            }
         }
         #endregion
         #region METHOD TO INCREASE PRODUCT
@@ -434,7 +422,8 @@ namespace AnyStore.DAL
             bool success = false;
 
             //Create SQL Connection To Connect DAtabase
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -451,11 +440,9 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
+            
+                        return success;
             }
-            return success;
         }
         #endregion
         #region METHOD TO DECREASE PRODUCT
@@ -464,7 +451,8 @@ namespace AnyStore.DAL
             //Create Boolean Variable and SEt its Value to false
             bool success = false;
 
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             try
             {
@@ -481,18 +469,17 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
+            
+                        return success;
             }
-            return success;
         }
         #endregion
         #region DESPLAY PRODUCTS BASED ON CATEGORIES
         public DataTable DisplayProductsByCategory(string category)
         {
             //Sql Connection First
-            SqlConnection conn = new SqlConnection(myconnstrng);
+            using (SqlConnection conn = DatabaseConnectionManager.CreateConnection())
+            {
 
             DataTable dt = new DataTable();
 
@@ -514,12 +501,10 @@ namespace AnyStore.DAL
             {
                 MessageBox.Show(ex.Message);
             }
-            finally
-            {
-                conn.Close();
-            }
+            
 
-            return dt;
+                        return dt;
+            }
         }
         #endregion
     }

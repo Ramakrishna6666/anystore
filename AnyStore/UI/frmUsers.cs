@@ -41,7 +41,7 @@ namespace AnyStore.UI
             u.address = txtAddress.Text;
             u.gender = cmbGender.Text;
             u.user_type = cmbUserType.Text;
-            u.added_date = DateTime.Now;
+            u.added_date = DateTimeOffset.UtcNow;
 
             //Getting Username of the logged in user
             string loggedUser = frmLogin.loggedIn;
@@ -116,7 +116,7 @@ namespace AnyStore.UI
             u.address = txtAddress.Text;
             u.gender = cmbGender.Text;
             u.user_type = cmbUserType.Text;
-            u.added_date = DateTime.Now;
+            u.added_date = DateTimeOffset.UtcNow;
             u.added_by = 1;
 
             //Updating Data into database

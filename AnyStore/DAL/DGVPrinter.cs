@@ -132,7 +132,7 @@ namespace DGVPrinterHelper //AllocationRequest
         /// <returns></returns>
         private static String LogFileName(String name)
         {
-            return String.Format("{0}_{1:yyyyMMdd}.Log", name, DateTime.Now);
+            return String.Format("{0}_{1:yyyyMMdd}.Log", name, DateTimeOffset.UtcNow);
         }
 
         /// <summary>
@@ -147,9 +147,9 @@ namespace DGVPrinterHelper //AllocationRequest
         public static void Write(String from, LogManager.Categories category, String msg, String path, String name)
         {
             StringBuilder line = new StringBuilder();
-            line.Append(DateTime.Now.ToShortDateString().ToString());
+            line.Append(DateTimeOffset.UtcNow.ToShortDateString().ToString());
             line.Append("-");
-            line.Append(DateTime.Now.ToLongTimeString().ToString());
+            line.Append(DateTimeOffset.UtcNow.ToLongTimeString().ToString());
             line.Append(", ");
             line.Append(category.ToString().PadRight(6, ' '));
             line.Append(",");
